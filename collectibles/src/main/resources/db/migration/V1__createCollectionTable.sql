@@ -1,0 +1,1 @@
+create table collectionGroup (id varchar(3), name varchar(33), collectionObj varchar(304));

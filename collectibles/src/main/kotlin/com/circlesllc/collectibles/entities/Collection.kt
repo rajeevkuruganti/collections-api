@@ -12,7 +12,7 @@ import javax.persistence.Id
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-data class Collection(
+data class CollectionGroup(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Number,

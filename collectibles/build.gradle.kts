@@ -34,7 +34,7 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
 // https://mvnrepository.com/artifact/org.flywaydb/flyway-gradle-plugin
-	runtimeOnly ("org.flywaydb:flyway.core")
+	runtimeOnly ("org.flywaydb:flyway-core")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

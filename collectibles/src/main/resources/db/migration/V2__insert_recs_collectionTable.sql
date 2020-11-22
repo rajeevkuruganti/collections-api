@@ -1,0 +1,1 @@
+insert into collectionGroup (id,name, collectionObj) values ( 231,'Movies', 'my DVDs');
