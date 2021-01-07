@@ -1,1 +1,1 @@
-create table collection_Group (id varchar(3), name varchar(33), collectionObj varchar(304));
+create table collection_Group (id int, name varchar(33), collectionObj varchar(304));
