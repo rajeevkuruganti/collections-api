@@ -5,7 +5,6 @@ import com.circlesllc.collectibles.repository.CollectionGroupRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
@@ -14,6 +13,7 @@ import java.util.*
 class CollectionController() {
     @Autowired
     private lateinit var collectionGroupRepo: CollectionGroupRepo
+
 
     @GetMapping("/hello")
     fun helloWorld(): String {
