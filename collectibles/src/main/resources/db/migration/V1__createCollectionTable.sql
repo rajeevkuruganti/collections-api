@@ -1,1 +1,0 @@
-create table collection_Group (id int, name varchar(33), collectionObj varchar(304));
