@@ -3,11 +3,13 @@ package com.circlesllc.collections.api.controllers
 import com.circlesllc.collections.api.entities.CollectionGroup
 import com.circlesllc.collections.api.repository.CollectionGroupRepo
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/collection")
 class CollectionController() {
