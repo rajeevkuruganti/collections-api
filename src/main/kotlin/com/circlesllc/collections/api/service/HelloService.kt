@@ -1,4 +1,4 @@
-package com.circlesllc.collectibles.service
+package com.circlesllc.collections.api.service
 
 import org.springframework.stereotype.Service
 

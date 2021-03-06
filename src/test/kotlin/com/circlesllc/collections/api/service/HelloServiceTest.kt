@@ -1,7 +1,7 @@
-package com.circlesllc.collecitibles.service
+package com.circlesllc.collections.api.service
 
 
-import com.circlesllc.collectibles.service.HelloService
+import com.circlesllc.collections.api.service.HelloService
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
@@ -24,7 +24,7 @@ class HelloServiceTest() {
     @Test
     fun `testing the real function`(){
 //        @Autowired
-        var helloService:HelloService = HelloService()
+        var helloService: HelloService = HelloService()
         println(helloService.sayHello("Inigo Montoya"))
         Assertions.assertEquals("Hello Mr Inigo Montoya", helloService.sayHello("Inigo Montoya"))
 

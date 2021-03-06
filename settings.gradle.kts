@@ -1,1 +1,1 @@
-rootProject.name = "collectibles"
+rootProject.name = "collections-api"

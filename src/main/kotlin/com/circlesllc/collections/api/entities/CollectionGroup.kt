@@ -1,4 +1,4 @@
-package com.circlesllc.collectibles.entities
+package com.circlesllc.collections.api.entities
 
 import lombok.AllArgsConstructor
 import lombok.Data

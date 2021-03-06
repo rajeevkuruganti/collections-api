@@ -1,7 +1,7 @@
-package com.circlesllc.collectibles.controllers
+package com.circlesllc.collections.api.controllers
 
-import com.circlesllc.collectibles.entities.CollectionGroup
-import com.circlesllc.collectibles.repository.CollectionGroupRepo
+import com.circlesllc.collections.api.entities.CollectionGroup
+import com.circlesllc.collections.api.repository.CollectionGroupRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

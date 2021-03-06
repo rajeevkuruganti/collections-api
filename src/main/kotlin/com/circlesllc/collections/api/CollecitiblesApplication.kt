@@ -1,4 +1,4 @@
-package com.circlesllc.collectibles
+package com.circlesllc.collections.api
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
