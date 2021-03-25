@@ -1,7 +1,9 @@
 package com.circlesllc.collections.api.controllers
 
+import com.circlesllc.collections.api.dataobject.CollectionGroupDO
 import com.circlesllc.collections.api.entities.CollectionGroup
 import com.circlesllc.collections.api.repository.CollectionGroupRepo
+import com.circlesllc.collections.api.service.CollectionGroupService
 import org.apache.tomcat.util.json.JSONParser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -14,6 +16,8 @@ class CollectionController() {
     @Autowired
     private lateinit var collectionGroupRepo: CollectionGroupRepo
 
+    @Autowired
+    private lateinit var collectionGroupService: CollectionGroupService
 
     @GetMapping("/hello")
     fun helloWorld(): String {
@@ -31,19 +35,9 @@ class CollectionController() {
         return collectionGroupRepo.findAll()
     }
 
-    @PostMapping("/cs1")
-    fun saveNewItem(@RequestBody collectionGroup: CollectionGroup): CollectionGroup {
-//        var collectionGroup: CollectionGroup(23434,"Classics" ,"tobeDeleted",item)
-//        collectionGroup.itemContents = item
-//        collectionGroup.name = "Classics"
-//        collectionGroup.collectionobj = "to be deleted"
-        println(collectionGroup.itemcontents)
-        println(collectionGroup.name)
-//        val someJson = """{"name":"Rajeev","title":"Architect"}"""
-//        collectionGroup.itemcontents=  someJson
-        println(collectionGroup.name)
-        println("did you make it here???")
-        return  collectionGroupRepo.save(collectionGroup)
+    @PostMapping("/cs")
+    fun saveNewItem(@RequestBody collectionGroupNew: CollectionGroupDO): CollectionGroup {
+        return  collectionGroupService.saveNewItem(collectionGroupNew)
     }
 
     @GetMapping("/cs/one")
