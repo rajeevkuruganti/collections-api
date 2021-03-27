@@ -19,11 +19,6 @@ class CollectionController() {
     @Autowired
     private lateinit var collectionGroupService: CollectionGroupService
 
-    @GetMapping("/hello")
-    fun helloWorld(): String {
-        return "Hello World! "
-    }
-
     @GetMapping("/info")
     fun getInfo(): String {
         return "This is the Collectible Application. In this application, you can store your collections and organize them. "
@@ -31,7 +26,6 @@ class CollectionController() {
 
     @GetMapping("/cs")
     fun getAll(): MutableIterable<CollectionGroup> {
-
         return collectionGroupRepo.findAll()
     }
 
