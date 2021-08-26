@@ -31,6 +31,7 @@ class CollectionController() {
 
     @PostMapping("/cs")
     fun saveNewItem(@RequestBody collectionGroupNew: CollectionGroupDO): CollectionGroup {
+        println("ITEM CONTENTS _---->   " + collectionGroupNew.itemcontents)
         return  collectionGroupService.saveNewItem(collectionGroupNew)
     }
 

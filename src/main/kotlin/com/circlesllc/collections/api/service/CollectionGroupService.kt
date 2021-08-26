@@ -13,11 +13,10 @@ class CollectionGroupService {
     private lateinit var collectionGroupRepo: CollectionGroupRepo
 
     fun saveNewItem(collectionGroupDO: CollectionGroupDO): CollectionGroup {
-        val jsonItemContents = """{"itemContents":  "${collectionGroupDO.itemcontents}"}""""
-        println("here you are " + jsonItemContents)
+        val jsonItemContents = """"${collectionGroupDO.itemcontents}""""
         var collectionGroup = CollectionGroup(
-            0L, collectionGroupDO.name, collectionGroupDO.collectionobj,
-            jsonItemContents
+            0L, collectionGroupDO.name,
+            collectionGroupDO.itemcontents
         )
         return collectionGroupRepo.save(collectionGroup)
 

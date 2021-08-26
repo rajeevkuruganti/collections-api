@@ -21,7 +21,6 @@ data class CollectionGroup(
         val id: Long,
         @Column
         val name: String,
-        val collectionobj: String,
         // the type for jsonb is important and so also the column definition for saving into the table
         @Type(type="jsonb")
         @Column(columnDefinition = "jsonb", nullable = true)
