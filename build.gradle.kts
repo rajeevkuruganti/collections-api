@@ -10,7 +10,7 @@ plugins {
 
 }
 
-group = "com.circlesllc."
+group = "com.circlesllc.collections.api"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
@@ -30,6 +30,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("com.vladmihalcea:hibernate-types-52:2.4.4")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
@@ -37,7 +38,6 @@ dependencies {
 	runtimeOnly ("org.flywaydb:flyway-core")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-//	testImplementation("io.mockk:mockk:1.9.3")
 //	testImplementation ("io.kotlintest:kotlintest-runner-junit5:3.3.2")
 	testImplementation ("io.mockk:mockk:1.9.3.kotlin12")
 }

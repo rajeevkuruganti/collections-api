@@ -1,0 +1,1 @@
+alter table collection_Group add column itemContents jsonb;

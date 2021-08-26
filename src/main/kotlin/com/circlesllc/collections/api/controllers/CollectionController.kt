@@ -1,12 +1,12 @@
 package com.circlesllc.collections.api.controllers
 
+import com.circlesllc.collections.api.dataobject.CollectionGroupDO
 import com.circlesllc.collections.api.entities.CollectionGroup
 import com.circlesllc.collections.api.repository.CollectionGroupRepo
+import com.circlesllc.collections.api.service.CollectionGroupService
+import org.apache.tomcat.util.json.JSONParser
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @CrossOrigin("*")
@@ -16,11 +16,8 @@ class CollectionController() {
     @Autowired
     private lateinit var collectionGroupRepo: CollectionGroupRepo
 
-
-    @GetMapping("/hello")
-    fun helloWorld(): String {
-        return "Hello World! "
-    }
+    @Autowired
+    private lateinit var collectionGroupService: CollectionGroupService
 
     @GetMapping("/info")
     fun getInfo(): String {
@@ -29,8 +26,12 @@ class CollectionController() {
 
     @GetMapping("/cs")
     fun getAll(): MutableIterable<CollectionGroup> {
-
         return collectionGroupRepo.findAll()
+    }
+
+    @PostMapping("/cs")
+    fun saveNewItem(@RequestBody collectionGroupNew: CollectionGroupDO): CollectionGroup {
+        return  collectionGroupService.saveNewItem(collectionGroupNew)
     }
 
     @GetMapping("/cs/one")
@@ -40,3 +41,5 @@ class CollectionController() {
     }
 
 }
+
+
