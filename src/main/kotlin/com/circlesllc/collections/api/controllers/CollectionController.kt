@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @CrossOrigin("*")
-@Slf4j
 @RestController
 @RequestMapping("/collection")
 class CollectionController() {
-    @Autowired
-    private lateinit var collectionGroupRepo: CollectionGroupRepo
+
 
     @Autowired
     private lateinit var collectionGroupService: CollectionGroupService
@@ -28,43 +26,42 @@ class CollectionController() {
 
     @GetMapping("/cs")
     fun getAll(): ResponseEntity<MutableIterable<CollectionGroup>> {
-        return ResponseEntity.ok( collectionGroupRepo.findAll())
+        return ResponseEntity.ok(collectionGroupService.findAll())
     }
 
 
     @GetMapping("/cs/{collectionId}")
     fun getOne(
         @PathVariable collectionId: Long
-    ): ResponseEntity<Optional<CollectionGroup>> {
-        return ResponseEntity.ok(collectionGroupRepo.findById(collectionId))
+    ): ResponseEntity<CollectionGroup>{
+        var byIdObject = collectionGroupService.findById(collectionId)
+//        return byIdObject != null? ResponseEntity.ok(byIdObject):  ResponseEntity.notFound()
+        return  ResponseEntity.of(byIdObject)
+
 
     }
 
     @GetMapping("/cs/byname/{collectionName}")
     fun getByName(
         @PathVariable collectionName: String
-    ): Optional<CollectionGroup> {
+    ): Optional<CollectionGroup>? {
         println("are you here collectionName =  $collectionName")
         println(collectionName)
 //        log.info("you are here")
-        val x = collectionGroupRepo.findByName(collectionName.toString())
+        val x = collectionGroupService.findByName(collectionName.toString())
         return x
     }
 
     @PostMapping("/cs")
     fun saveNewItem(@RequestBody collectionGroupNew: CollectionGroupDO): CollectionGroup {
-        return  collectionGroupService.saveNewItem(collectionGroupNew)
+        return collectionGroupService.saveNewItem(collectionGroupNew)
     }
 
     @DeleteMapping("/cs/{collectionId}")
     fun deleteOne(
         @PathVariable collectionId: Long
     ): Boolean {
-        if (collectionGroupRepo.findById(collectionId) != null) {
-            collectionGroupRepo.deleteById(collectionId)
-            return true;
-        }
-        return false
+        return collectionGroupService.deleteById(collectionId)
     }
 
 }
