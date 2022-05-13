@@ -31,6 +31,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.vladmihalcea:hibernate-types-52:2.4.4")
+    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+	implementation("org.junit.jupiter:junit-jupiter:5.8.1")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
