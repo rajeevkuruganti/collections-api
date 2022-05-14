@@ -41,12 +41,12 @@ class CollectionGroupService {
 
     }
 
-    fun findById(collectionId: Long): Optional<CollectionGroup>? {
+    fun findById(collectionId: Long): Optional<CollectionGroup> {
         try {
             return collectionGroupRepo.findById(collectionId)
         } catch (nfe: NotFoundException){
-           println("NOT FOUND")
-            return null;
+            println("NOT FOUND")
+            return Optional.empty();
 
         }
     }
