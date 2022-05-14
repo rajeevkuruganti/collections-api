@@ -45,9 +45,6 @@ class CollectionController() {
     fun getByName(
         @PathVariable collectionName: String
     ): Optional<CollectionGroup>? {
-        println("are you here collectionName =  $collectionName")
-        println(collectionName)
-//        log.info("you are here")
         val x = collectionGroupService.findByName(collectionName.toString())
         return x
     }
