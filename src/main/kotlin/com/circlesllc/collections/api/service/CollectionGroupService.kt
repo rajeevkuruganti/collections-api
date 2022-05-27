@@ -13,12 +13,11 @@ import java.util.*
 @Slf4j
 class CollectionGroupService {
     @Autowired
-    private lateinit var collectionGroupRepo: CollectionGroupRepo
+    lateinit var collectionGroupRepo: CollectionGroupRepo
 
 
     fun saveNewItem(collectionGroupDO: CollectionGroupDO): CollectionGroup {
-        val jsonItemContents = """"${collectionGroupDO.itemcontents}""""
-        var collectionGroup = CollectionGroup(
+        val collectionGroup = CollectionGroup(
             0L, collectionGroupDO.name,
             collectionGroupDO.itemcontents
         )
@@ -27,32 +26,33 @@ class CollectionGroupService {
     }
 
     fun deleteById(collectionId: Long): Boolean {
-        if (collectionGroupRepo.findById(collectionId) != null ) {
+        return try {
             collectionGroupRepo.deleteById(collectionId)
-            return true
+            true
+        } catch (nfe: NotFoundException ) {
+            false
         }
-        return false
     }
 
     fun findByName(inputName: String): Optional<CollectionGroup> {
-        try {
-            return collectionGroupRepo.findByName(inputName)
-        } catch (nfe: NotFoundException){
-
-            return Optional.empty()
+        return try {
+            collectionGroupRepo.findByName(inputName)
+        } catch (nfe: NotFoundException) {
+            Optional.empty()
         }
 
     }
 
+    @Suppress("UseExpressionBody")
     fun findAll(): MutableIterable<CollectionGroup> {
-       return  collectionGroupRepo.findAll();
+        return collectionGroupRepo.findAll()
 
     }
 
     fun findById(collectionId: Long): Optional<CollectionGroup> {
         try {
             return collectionGroupRepo.findById(collectionId)
-        } catch (nfe: NotFoundException){
+        } catch (nfe: NotFoundException) {
             println("NOT FOUND")
             return Optional.empty()
 

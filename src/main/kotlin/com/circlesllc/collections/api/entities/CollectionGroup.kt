@@ -18,7 +18,7 @@ import javax.persistence.*
 data class CollectionGroup(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        var id: Long,
         @Column
         val name: String,
         // the type for jsonb is important and so also the column definition for saving into the table
