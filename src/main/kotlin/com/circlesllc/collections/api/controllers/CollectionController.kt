@@ -2,9 +2,7 @@ package com.circlesllc.collections.api.controllers
 
 import com.circlesllc.collections.api.dataobject.CollectionGroupDO
 import com.circlesllc.collections.api.entities.CollectionGroup
-import com.circlesllc.collections.api.repository.CollectionGroupRepo
 import com.circlesllc.collections.api.service.CollectionGroupService
-import lombok.extern.slf4j.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -26,27 +24,34 @@ class CollectionController() {
 
     @GetMapping("/cs")
     fun getAll(): ResponseEntity<MutableIterable<CollectionGroup>> {
-        return ResponseEntity.ok(collectionGroupService.findAll())
+        if (collectionGroupService.findAll() != null) {
+            return ResponseEntity.ok(collectionGroupService.findAll())
+        }
+        return ResponseEntity.notFound().build()
+
     }
 
 
     @GetMapping("/cs/{collectionId}")
     fun getOne(
-        @PathVariable collectionId: Long
-    ): ResponseEntity<CollectionGroup>{
-        var byIdObject = collectionGroupService.findById(collectionId)
-//        return byIdObject != null? ResponseEntity.ok(byIdObject):  ResponseEntity.notFound()
-        return  ResponseEntity.of(byIdObject)
-
-
+            @PathVariable collectionId: Long
+    ): Any {
+        var myCollection = collectionGroupService.findById(collectionId)
+        if (myCollection != null) {
+            return ResponseEntity.ok(myCollection)
+        }
+        return ResponseEntity.notFound()
     }
 
-    @GetMapping("/cs/byname/{collectionName}")
+    @GetMapping("/cs/name/{collectionName}")
     fun getByName(
-        @PathVariable collectionName: String
-    ): Optional<CollectionGroup>? {
-        val x = collectionGroupService.findByName(collectionName.toString())
-        return x
+            @PathVariable collectionName: String
+    ): Any {
+        val myCollection = collectionGroupService.findByName(collectionName.toString())
+        if (myCollection != null) {
+            return ResponseEntity.ok(myCollection)
+        }
+        return ResponseEntity.notFound()
     }
 
     @PostMapping("/cs")
@@ -56,7 +61,7 @@ class CollectionController() {
 
     @DeleteMapping("/cs/{collectionId}")
     fun deleteOne(
-        @PathVariable collectionId: Long
+            @PathVariable collectionId: Long
     ): Boolean {
         return collectionGroupService.deleteById(collectionId)
     }
