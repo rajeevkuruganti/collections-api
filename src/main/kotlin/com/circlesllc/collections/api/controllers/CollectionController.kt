@@ -32,7 +32,7 @@ class CollectionController() {
     }
 
 
-    @GetMapping("/cs/{collectionId}")
+    @GetMapping("/cs/{collectionId}{entryDate}")
     fun getOne(
             @PathVariable collectionId: Long
     ): Any {
