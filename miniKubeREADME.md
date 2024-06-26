@@ -12,4 +12,4 @@ Steps
     1.4 We will use bitnami postgres sql and `helm repo add bitnami https://charts.bitnami.com/bitnami` & check by using 
         `helm search repo postgres`
 
-    1.5 
+    1.5 something added to check where it goes i.e. which git account?
