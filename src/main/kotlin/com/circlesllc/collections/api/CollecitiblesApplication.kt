@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
 @EnableTransactionManagement
-class CollectiblesApplication
+class CollectiblesA pplication
 
 fun main(args: Array<String>) {
     runApplication<CollectiblesApplication>(*args)

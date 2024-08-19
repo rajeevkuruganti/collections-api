@@ -1,5 +1,4 @@
 alter table collection_Group
-    DROP COLUMN collectionObj,
     ADD COLUMN artist varchar(128),
     ADD COLUMN year_released varchar(4),
     ADD COLUMN edition varchar(64),
