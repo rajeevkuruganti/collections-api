@@ -3,7 +3,6 @@ package com.circlesllc.collections.api.service
 import com.circlesllc.collections.api.dataobject.CollectionGroupDO
 import com.circlesllc.collections.api.entities.CollectionGroup
 import com.circlesllc.collections.api.repository.CollectionGroupRepo
-import javassist.NotFoundException
 import lombok.extern.slf4j.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -29,7 +28,7 @@ class CollectionGroupService {
         return try {
             collectionGroupRepo.deleteById(collectionId)
             true
-        } catch (nfe: NotFoundException ) {
+        } catch (nfe: Exception ) {
             false
         }
     }
@@ -37,7 +36,7 @@ class CollectionGroupService {
     fun findByName(inputName: String): Optional<CollectionGroup> {
         return try {
             collectionGroupRepo.findByName(inputName)
-        } catch (nfe: NotFoundException) {
+        } catch (nfe: Exception) {
             Optional.empty()
         }
 
@@ -52,7 +51,7 @@ class CollectionGroupService {
     fun findById(collectionId: Long): Optional<CollectionGroup> {
         try {
             return collectionGroupRepo.findById(collectionId)
-        } catch (nfe: NotFoundException) {
+        } catch (nfe: Exception) {
             println("NOT FOUND")
             return Optional.empty()
 

@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.4.0"
+	id("org.springframework.boot") version "2.7.0"
 	id("io.spring.dependency-management") version "1.0.10.RELEASE"
 	id ("org.flywaydb.flyway") version "7.2.1"
-	kotlin("jvm") version "1.4.10"
+	kotlin("jvm") version "1.6.0"
 	kotlin("plugin.spring") version "1.4.10"
 	kotlin("plugin.jpa") version "1.4.10"
 
@@ -33,9 +33,11 @@ dependencies {
 	implementation("com.vladmihalcea:hibernate-types-52:2.4.4")
     implementation("org.junit.jupiter:junit-jupiter:5.8.1")
 	implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+//	implementation("io.minio.s3")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
+
 // https://mvnrepository.com/artifact/org.flywaydb/flyway-gradle-plugin
 	runtimeOnly ("org.flywaydb:flyway-core")
 	annotationProcessor("org.projectlombok:lombok")
