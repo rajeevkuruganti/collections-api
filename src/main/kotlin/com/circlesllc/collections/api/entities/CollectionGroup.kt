@@ -1,20 +1,21 @@
 package com.circlesllc.collections.api.entities
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType
+import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.Data
 import lombok.NoArgsConstructor
+import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.annotations.Type
-import org.hibernate.annotations.TypeDef
-
-import javax.persistence.*
+import org.hibernate.type.SqlTypes
+import java.sql.JDBCType.*
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "collection_group")
-@TypeDef(name="jsonb", typeClass = JsonBinaryType::class)
+//@TypeDef(name="jsonb", typeClass = JsonBinaryType::class)
+//@Convert(attributeName = "entityAttrName", converter = "StringJsonUserType.class"
 data class CollectionGroup(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +23,7 @@ data class CollectionGroup(
         @Column
         val name: String,
         // the type for jsonb is important and so also the column definition for saving into the table
-        @Type(type="jsonb")
+        @JdbcTypeCode(SqlTypes.JSON)
         @Column(columnDefinition = "jsonb", nullable = true)
         var itemcontents: String
 
