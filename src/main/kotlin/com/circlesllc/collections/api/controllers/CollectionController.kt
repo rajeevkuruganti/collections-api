@@ -6,10 +6,10 @@ import com.circlesllc.collections.api.service.CollectionGroupService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
-@CrossOrigin("*")
+
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/collection")
 class CollectionController() {
 
@@ -32,7 +32,7 @@ class CollectionController() {
     }
 
 
-    @GetMapping("/cs/{collectionId}{entryDate}")
+    @GetMapping("/cs/{collectionId}")
     fun getOne(
             @PathVariable collectionId: Long
     ): Any {
