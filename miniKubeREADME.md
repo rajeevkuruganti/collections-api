@@ -1,3 +1,11 @@
+**Minio S3 on MAC OS for local S3 bucket**
+command after installing minio S3; start on terminal window using this command: 
+
+`minio server ~/minio --console-address :9001`
+
+
+
+
 **MiniKube on MAC OS local**
 
 Steps
