@@ -1,0 +1,30 @@
+collection:
+  images:
+    s3:
+      bucket: collection-images
+minio:
+  s3:
+    access:
+      key: Z09TXYzfmu2q01ScKRfy
+    secret:
+      key: NnPLNtYCnZsWyPZfrxOlnaedkEi7c9hykFs14wj5
+    url: http://127.0.0.1:9000
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+  flyway:
+    baseline-on-migrate: true
+    repeatable-sql-migration-prefix: R
+    schemas:
+      table: flyway_schema_history
+    sql-migration-prefix: V
+    sql-migration-separator: __
+    sql-migration-suffixes: .sql
+    validateOnMigrate: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true

@@ -1,58 +1,86 @@
 package com.circlesllc.collections.api.service
 
-import io.minio.MinioClient
+import com.circlesllc.collections.api.dataobject.Image
+import io.minio.*
+import io.minio.http.Method
+import io.minio.messages.Bucket
+import io.minio.messages.Item
 import lombok.extern.slf4j.Slf4j
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.util.concurrent.TimeUnit
 
 
 @Service
 @Slf4j
-class ImageServiceS3 {
+class ImageServiceS3(
+    @Value(value = "\${collection.images.s3.bucket}")
+    val minioBucket: String,
+    @Value("\${minio.s3.access.key}")
+    var minioAccesKey: String,
+    @Value("\${minio.s3.secret.key}")
+    var minioSecretKey: String,
+    @Value("\${minio.s3.url}")
+    var minioS3URL: String?
+) {
 
-    fun getObject(name: String): Object? {
-        val obj: Unit
-        val minioClient = MinioClient.builder()
-            .endpoint("http://127.0.0.1:9000")
-            .credentials("minioadmin", "minioadmin")
+    fun images(): ArrayList<Image> {
+        var list: ArrayList<Image> = ArrayList<Image>()
+        var listUrls: ArrayList<String> = ArrayList()
+
+//        println("minioBucket: $minioBucket")
+//        println("minioAccessKey: $minioAccesKey")
+//        println("minioSecretKey: ${minioSecretKey}")
+//        println("minioS3Url: ${minioS3URL}")
+        val reqParams: MutableMap<String, String> = HashMap()
+        reqParams["response-content-type"] = "application/json"
+
+        // Initialize minio client object.
+        val minioClient: MinioClient = MinioClient.builder()
+            .endpoint(minioS3URL)
+            .credentials(minioAccesKey, minioSecretKey)
             .build()
-//        obj = minioClient.getObject(
-//            GetObjectArgs
-//                .builder()
-//                .bucket("collection-images")
-//                .`object`("eastContinentalDivide.jpg")
-//                .build()
-//        ).use {
-//            stream -> (obj != null) ? println("sucess"): println("nokpe")}
-//
-//          // List all objects.
-//        val myObjects: Iterable<Result<Item>> = minioClient.listObjects("collection-images")
-//        // Iterate over each elements and set album url.
-//        for (result in myObjects) {
-//            val item: Item = result.getOrThrow()
-//            println(buildString {
-//                append((item.lastModified() + ", " + item.size()).toString())
-//                append(", ")
-//                append(item.objectName())
-//            })
-//
-//            // Generate a presigned URL which expires in a day
-//            val url = minioClient.getPresignedObjectUrl(minioBucket, item.objectName(), 60 * 60 * 24)
-//
-//            // Create a new Album Object
-//            val album = Album()
-//
-//            // Set the presigned URL in the album object
-//            album.setUrl(url)
-//
-//            // Add the album object to the list holding Album objects
-//            list.add(album)
-//        }
-//
-//        // Return list of albums.
-//
-//        // Return list of albums.
-//        return list
-//    }
-        return null
+        val bucketList: MutableList<Bucket>? = minioClient.listBuckets()
+        bucketList?.forEach({ bucket -> println(bucket.name()) })
+        val found =
+            minioClient.bucketExists(BucketExistsArgs.builder().bucket("collection-images").build())
+        if (found) {
+            println("Yes !!! I connected to my bucket exists")
+            val results: MutableIterable<Result<Item>>? = minioClient.listObjects(
+                ListObjectsArgs.builder()
+                    .bucket(minioBucket)
+                    .build()
+            )
+            for (result in results!!) {
+                val item = result.get()
+                println("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
+                val objectNameValue: String = item.objectName()
+                val url =
+                    minioClient.getPresignedObjectUrl(
+                        GetPresignedObjectUrlArgs.builder()
+                            .method(Method.GET)
+                            .bucket(minioBucket)
+                            .`object`(objectNameValue)
+                            .expiry(2, TimeUnit.HOURS)
+                            .build()
+                    )
+                println("URL is  ${url}")
+                val image: Image = Image(item.lastModified(), item.size(), item.objectName(), url)
+                list.add(image)
+                listUrls.add(url)
+                println(image.toString())
+            }
+        } else {
+            println("Now what?? does not exist. We create it!")
+            minioClient.makeBucket(
+                MakeBucketArgs
+                    .builder()
+                    .bucket(minioBucket)
+                    .build()
+            )
+            println("created collection-images")
+
+        }
+        return list
     }
 }
