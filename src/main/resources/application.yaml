@@ -5,17 +5,13 @@ collection:
 minio:
   s3:
     access:
-      key: qyvGjQWi6OwGFchokELs
-#      key: Z09TXYzfmu2q01ScKRfy
+      key: JQjVfgtBbFO9260IOQbm
     secret:
-      key: Htoq8DA174JX7nAoYrYGcjg2DthqwxO1I6NT9ODu
-#      key: NnPLNtYCnZsWyPZfrxOlnaedkEi7c9hykFs14wj5
+      key: hxMK5KU7Y3REuikdSj4Jr3BJEGonB3j28nlgfYuX
     url: http://127.0.0.1:9000
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
   flyway:
     baseline-on-migrate: true
     repeatable-sql-migration-prefix: R
