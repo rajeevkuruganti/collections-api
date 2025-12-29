@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/collection")
 class CollectionController() {
 
