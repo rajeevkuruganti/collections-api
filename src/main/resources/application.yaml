@@ -5,9 +5,10 @@ collection:
 minio:
   s3:
     access:
-      key: JQjVfgtBbFO9260IOQbm
+#      key:
+      key: wlYOEioeDrXmEW5kMuwd
     secret:
-      key: hxMK5KU7Y3REuikdSj4Jr3BJEGonB3j28nlgfYuX
+      key: vrO8aoxzL6dIzEeNNIBSEoCBJS0RVP9jPGWHtR8M
     url: http://127.0.0.1:9000
 spring:
   datasource:
