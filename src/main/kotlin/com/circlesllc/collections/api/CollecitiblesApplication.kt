@@ -38,7 +38,7 @@ class CorsConfig(
 
     companion object {
         private const val CORS_MAPPING_PATTERN = "/**"
-        private val ALLOWED_HTTP_METHODS = arrayOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        private val ALLOWED_HTTP_METHODS = arrayOf("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS")
     }
 
     override fun addCorsMappings(registry: CorsRegistry) {

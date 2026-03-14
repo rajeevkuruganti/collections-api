@@ -24,10 +24,27 @@ class ImageServiceS3(
     var minioS3URL: String?
 ) {
 
+    private var minioClient: MinioClient? = null
+
+    fun getMinioClient(): MinioClient? {
+        if (minioClient == null && minioS3URL != null && minioAccesKey != null && minioSecretKey != null) {
+            minioClient = MinioClient.builder()
+                .endpoint(minioS3URL)
+                .credentials(minioAccesKey, minioSecretKey)
+                .build()
+        }
+        return minioClient
+    }
+
+    // For testing purposes
+    fun setMinioClient(client: MinioClient) {
+        this.minioClient = client
+    }
+
     companion object {
         private const val CONTENT_TYPE_JSON = "application/json"
         private const val PARAM_RESPONSE_CONTENT_TYPE = "response-content-type"
-        private const val URL_EXPIRY_DURATION = 2L
+        private const val URL_EXPIRY_DURATION = 2
         private val URL_EXPIRY_UNIT = TimeUnit.HOURS
     }
 
@@ -37,20 +54,16 @@ class ImageServiceS3(
 
         val reqParams: MutableMap<String, String> = HashMap()
         reqParams[PARAM_RESPONSE_CONTENT_TYPE] = CONTENT_TYPE_JSON
-        if (minioS3URL != null && minioAccesKey != null && minioSecretKey != null) {
-            // Initialize minio client object.
-            val minioClient: MinioClient = MinioClient.builder()
-                .endpoint(minioS3URL)
-                .credentials(minioAccesKey, minioSecretKey)
-                .build()
-            val bucketList: MutableList<Bucket>? = minioClient.listBuckets()
+        val client = getMinioClient()
+        if (client != null) {
+            val bucketList: MutableList<Bucket>? = client.listBuckets()
             bucketList?.forEach({ bucket -> println(bucket.name()) })
 
             val found =
-                minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioBucket).build())
+                client.bucketExists(BucketExistsArgs.builder().bucket(minioBucket).build())
             if (found) {
                 println("Yes !!! I connected to my bucket exists")
-                val results: MutableIterable<Result<Item>>? = minioClient.listObjects(
+                val results: MutableIterable<Result<Item>>? = client.listObjects(
                     ListObjectsArgs.builder()
                         .bucket(minioBucket)
                         .build()
@@ -60,7 +73,7 @@ class ImageServiceS3(
                     println("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
                     val objectNameValue: String = item.objectName()
                     val url =
-                        minioClient.getPresignedObjectUrl(
+                        client.getPresignedObjectUrl(
                             GetPresignedObjectUrlArgs.builder()
                                 .method(Method.GET)
                                 .bucket(minioBucket)
@@ -77,7 +90,7 @@ class ImageServiceS3(
             } else {
                 println("Now what?? does not exist. We create it!")
                 // Here we create the bucket for the userId and under that the collectible item.
-                minioClient.makeBucket(
+                client.makeBucket(
                     MakeBucketArgs
                         .builder()
                         .bucket(minioBucket)

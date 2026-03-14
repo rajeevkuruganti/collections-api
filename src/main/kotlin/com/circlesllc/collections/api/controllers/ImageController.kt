@@ -37,12 +37,12 @@ class ImageController(
     fun putImageInS3(){
         println("in Post mapping")
         try {
-            // Create a minioClient with the MinIO server playground, its access key and secret key.
-            val minioClient =
-                MinioClient.builder()
-                    .endpoint(minioUrl)
-//                    .credentials("Q3AM3UQ867SPQQA43P2F", "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG")
-                    .build()
+            // Use the service to get the minio client
+            val minioClient = imageServiceS3.getMinioClient()
+            if (minioClient == null) {
+                println("Could not initialize MinioClient")
+                return
+            }
 
             // Make 'asiatrip' bucket if not exist.
             val found =
