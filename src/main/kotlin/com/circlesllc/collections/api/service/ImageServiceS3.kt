@@ -24,12 +24,19 @@ class ImageServiceS3(
     var minioS3URL: String?
 ) {
 
+    companion object {
+        private const val CONTENT_TYPE_JSON = "application/json"
+        private const val PARAM_RESPONSE_CONTENT_TYPE = "response-content-type"
+        private const val URL_EXPIRY_DURATION = 2L
+        private val URL_EXPIRY_UNIT = TimeUnit.HOURS
+    }
+
     fun images(): ArrayList<Image> {
         var list: ArrayList<Image> = ArrayList<Image>()
         var listUrls: ArrayList<String> = ArrayList()
 
         val reqParams: MutableMap<String, String> = HashMap()
-        reqParams["response-content-type"] = "application/json"
+        reqParams[PARAM_RESPONSE_CONTENT_TYPE] = CONTENT_TYPE_JSON
         if (minioS3URL != null && minioAccesKey != null && minioSecretKey != null) {
             // Initialize minio client object.
             val minioClient: MinioClient = MinioClient.builder()
@@ -40,7 +47,7 @@ class ImageServiceS3(
             bucketList?.forEach({ bucket -> println(bucket.name()) })
 
             val found =
-                minioClient.bucketExists(BucketExistsArgs.builder().bucket("collection-images").build())
+                minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioBucket).build())
             if (found) {
                 println("Yes !!! I connected to my bucket exists")
                 val results: MutableIterable<Result<Item>>? = minioClient.listObjects(
@@ -58,7 +65,7 @@ class ImageServiceS3(
                                 .method(Method.GET)
                                 .bucket(minioBucket)
                                 .`object`(objectNameValue)
-                                .expiry(2, TimeUnit.HOURS)
+                                .expiry(URL_EXPIRY_DURATION, URL_EXPIRY_UNIT)
                                 .build()
                         )
                     println("URL is  ${url}")
@@ -76,7 +83,7 @@ class ImageServiceS3(
                         .bucket(minioBucket)
                         .build()
                 )
-                println("created collection-images")
+                println("created $minioBucket")
 
             }
         } else {

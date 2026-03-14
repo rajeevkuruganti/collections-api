@@ -36,9 +36,14 @@ class CorsConfig(
     private val corsProps: CorsProps
 ) : WebMvcConfigurer {
 
+    companion object {
+        private const val CORS_MAPPING_PATTERN = "/**"
+        private val ALLOWED_HTTP_METHODS = arrayOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+    }
+
     override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/**")
+        registry.addMapping(CORS_MAPPING_PATTERN)
             .allowedOrigins(*corsProps.allowedOrigins.toTypedArray())
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedMethods(*ALLOWED_HTTP_METHODS)
     }
 }
