@@ -3,14 +3,17 @@ package com.circlesllc.collections.api.service
 import com.circlesllc.collections.api.dataobject.CollectionGroupDO
 import com.circlesllc.collections.api.entities.CollectionGroup
 import com.circlesllc.collections.api.repository.CollectionGroupRepo
-import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-@Slf4j
 class CollectionGroupService {
+    companion object {
+        private val log = LoggerFactory.getLogger(CollectionGroupService::class.java)
+    }
+
     @Autowired
     lateinit var collectionGroupRepo: CollectionGroupRepo
 
@@ -52,7 +55,7 @@ class CollectionGroupService {
         try {
             return collectionGroupRepo.findById(collectionId)
         } catch (nfe: Exception) {
-            println("NOT FOUND")
+            log.error("NOT FOUND")
             return Optional.empty()
 
         }

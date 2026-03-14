@@ -5,14 +5,13 @@ import io.minio.*
 import io.minio.http.Method
 import io.minio.messages.Bucket
 import io.minio.messages.Item
-import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.concurrent.TimeUnit
 
 
 @Service
-@Slf4j
 class ImageServiceS3(
     @Value(value = "\${collection.images.s3.bucket}")
     val minioBucket: String,
@@ -42,6 +41,7 @@ class ImageServiceS3(
     }
 
     companion object {
+        private val log = LoggerFactory.getLogger(ImageServiceS3::class.java)
         private const val CONTENT_TYPE_JSON = "application/json"
         private const val PARAM_RESPONSE_CONTENT_TYPE = "response-content-type"
         private const val URL_EXPIRY_DURATION = 2
@@ -57,12 +57,12 @@ class ImageServiceS3(
         val client = getMinioClient()
         if (client != null) {
             val bucketList: MutableList<Bucket>? = client.listBuckets()
-            bucketList?.forEach({ bucket -> println(bucket.name()) })
+            bucketList?.forEach({ bucket -> log.info(bucket.name()) })
 
             val found =
                 client.bucketExists(BucketExistsArgs.builder().bucket(minioBucket).build())
             if (found) {
-                println("Yes !!! I connected to my bucket exists")
+                log.info("Yes !!! I connected to my bucket exists")
                 val results: MutableIterable<Result<Item>>? = client.listObjects(
                     ListObjectsArgs.builder()
                         .bucket(minioBucket)
@@ -70,7 +70,7 @@ class ImageServiceS3(
                 )
                 for (result in results!!) {
                     val item = result.get()
-                    println("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
+                    log.info("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
                     val objectNameValue: String = item.objectName()
                     val url =
                         client.getPresignedObjectUrl(
@@ -81,14 +81,14 @@ class ImageServiceS3(
                                 .expiry(URL_EXPIRY_DURATION, URL_EXPIRY_UNIT)
                                 .build()
                         )
-                    println("URL is  ${url}")
+                    log.info("URL is  ${url}")
                     val image: Image = Image(item.lastModified(), item.size(), item.objectName(), url)
                     list.add(image)
                     listUrls.add(url)
-                    println(image.toString())
+                    log.info(image.toString())
                 }
             } else {
-                println("Now what?? does not exist. We create it!")
+                log.info("Now what?? does not exist. We create it!")
                 // Here we create the bucket for the userId and under that the collectible item.
                 client.makeBucket(
                     MakeBucketArgs
@@ -96,12 +96,16 @@ class ImageServiceS3(
                         .bucket(minioBucket)
                         .build()
                 )
-                println("created $minioBucket")
+                log.info("created $minioBucket")
 
             }
         } else {
-            println("Do not have any variables to connect to Minio !")
+            log.warn("Do not have any variables to connect to Minio !")
         }
         return list
+    }
+    open fun deleteImage(storedImageFileName: String): Boolean {
+
+        return false
     }
 }

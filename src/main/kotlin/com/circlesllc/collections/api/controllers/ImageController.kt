@@ -7,6 +7,7 @@ import io.minio.MakeBucketArgs
 import io.minio.MinioClient
 import io.minio.UploadObjectArgs
 import io.minio.errors.MinioException
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 
@@ -23,6 +24,7 @@ class ImageController(
 ) {
 
     companion object {
+        private val log = LoggerFactory.getLogger(ImageController::class.java)
         // Constants moved to application.yaml
     }
 
@@ -35,12 +37,12 @@ class ImageController(
 
     @PostMapping
     fun putImageInS3(){
-        println("in Post mapping")
+        log.info("in Post mapping")
         try {
             // Use the service to get the minio client
             val minioClient = imageServiceS3.getMinioClient()
             if (minioClient == null) {
-                println("Could not initialize MinioClient")
+                log.warn("Could not initialize MinioClient")
                 return
             }
 
@@ -51,7 +53,7 @@ class ImageController(
                 // Make a new bucket called 'asiatrip'.
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build())
             } else {
-                println("Bucket 'asiatrip' WJHAT  already exists.")
+                log.info("Bucket 'asiatrip' WJHAT  already exists.")
             }
 
             // TODO: Remove hardcoded test code - this should accept file upload parameters
@@ -67,8 +69,8 @@ class ImageController(
             //             + "object 'asiaphotos-2015.zip' to bucket 'asiatrip'."
             // )
         } catch (e: MinioException) {
-            println("Error occurred: $e")
-            println("HTTP trace: " + e.httpTrace())
+            log.error("Error occurred: $e")
+            log.error("HTTP trace: " + e.httpTrace())
         }
     }
 
