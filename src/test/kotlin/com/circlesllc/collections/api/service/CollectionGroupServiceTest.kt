@@ -122,4 +122,5 @@ internal class CollectionGroupServiceTest {
         result = collectionGroupService.findById(id)
         assertFalse(result.isPresent)
     }
+
 }

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/collection")
 class CollectionController() {
 
-
     @Autowired
     private lateinit var collectionGroupService: CollectionGroupService
 
     @GetMapping("/info")
     fun getInfo(): String {
-        return "This is the Collectible Application. In this application, you can store your collections and organize them. "
+        return "This is the Collectible Application. " +
+                "In this application, you can store your collections and organize them. "
     }
 
     @GetMapping("/cs")
@@ -35,9 +35,9 @@ class CollectionController() {
     fun getOne(
             @PathVariable collectionId: Long
     ): Any {
-        var myCollection = collectionGroupService.findById(collectionId)
-        if (myCollection != null) {
-            return ResponseEntity.ok(myCollection)
+        val myItem = collectionGroupService.findById(collectionId)
+        if (myItem != null) {
+            return ResponseEntity.ok(myItem)
         }
         return ResponseEntity.notFound()
     }
@@ -46,9 +46,9 @@ class CollectionController() {
     fun getByName(
             @PathVariable collectionName: String
     ): Any {
-        val myCollection = collectionGroupService.findByName(collectionName.toString())
-        if (myCollection != null) {
-            return ResponseEntity.ok(myCollection)
+        val myItem = collectionGroupService.findByName(collectionName)
+        if (myItem != null) {
+            return ResponseEntity.ok(myItem)
         }
         return ResponseEntity.notFound()
     }
@@ -63,6 +63,17 @@ class CollectionController() {
             @PathVariable collectionId: Long
     ): Boolean {
         return collectionGroupService.deleteById(collectionId)
+    }
+    @PatchMapping("/cs/{collectibleId}")
+    fun updateItem(
+          @PathVariable collectibleId: Long,
+          @RequestBody updatedJsonInfo: String
+    ) : Any {
+        val myStoredItem= collectionGroupService.updateItem(collectibleId, updatedJsonInfo)
+        if (myStoredItem != null) {
+            return ResponseEntity.ok(myStoredItem)
+        }
+        return ResponseEntity.notFound()
     }
 
 }
