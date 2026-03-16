@@ -66,11 +66,17 @@ class ImageServiceS3(
                 val results: MutableIterable<Result<Item>>? = client.listObjects(
                     ListObjectsArgs.builder()
                         .bucket(minioBucket)
+                        .prefix("rajeevk/")   // your “folder”
+                        .recursive(false)
                         .build()
                 )
+                println(results)
                 for (result in results!!) {
                     val item = result.get()
-                    log.info("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
+                    // Skip directory-like entries (no real object content)
+                    if (item.isDir) continue
+
+                    println("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
                     val objectNameValue: String = item.objectName()
                     val url =
                         client.getPresignedObjectUrl(
@@ -88,7 +94,7 @@ class ImageServiceS3(
                     log.info(image.toString())
                 }
             } else {
-                log.info("Now what?? does not exist. We create it!")
+                println("Now what?? does not exist. We create it!")
                 // Here we create the bucket for the userId and under that the collectible item.
                 client.makeBucket(
                     MakeBucketArgs

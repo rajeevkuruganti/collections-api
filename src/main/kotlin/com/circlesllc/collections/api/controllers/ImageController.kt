@@ -49,25 +49,25 @@ class ImageController(
             // Make 'asiatrip' bucket if not exist.
             val found =
                 minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())
-            if (!found) {
-                // Make a new bucket called 'asiatrip'.
-                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build())
-            } else {
-                log.info("Bucket 'asiatrip' WJHAT  already exists.")
-            }
+//            if (!found) {
+//                // Make a new bucket called 'asiatrip'.
+//                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build())
+//            } else {
+//                log.info("Bucket 'asiatrip' WJHAT  already exists.")
+//            }
 
             // TODO: Remove hardcoded test code - this should accept file upload parameters
-            // minioClient.uploadObject(
-            //     UploadObjectArgs.builder()
-            //         .bucket(bucketName)
-            //         .`object`("asiaphotos-2015.zip")
-            //         .filename("/home/user/Photos/asiaphotos.zip")
-            //         .build()
-            // )
-            // println(
-            //     "'/home/rajeevk/temp/someImage.png' is successfully uploaded as "
-            //             + "object 'asiaphotos-2015.zip' to bucket 'asiatrip'."
-            // )
+             minioClient.uploadObject(
+                 UploadObjectArgs.builder()
+                     .bucket(bucketName)
+                     .`object`("rajeevk/storedFile1.png")  /// STORED FILE NAME WITH PATH TO MINO
+//                     .filename("/home/rajeevk/Desktop/Pics/WalkingTree.jpg")
+                     .filename("/Users/rajeevk/Desktop/Pics/WalkingTree.jpg") /// THE FILE NAME from DESKTOP sent by UI
+                     .build()
+             )
+             println(
+                 "'WalkingTree.jpg' is successfully uploaded as "
+             )
         } catch (e: MinioException) {
             log.error("Error occurred: $e")
             log.error("HTTP trace: " + e.httpTrace())
