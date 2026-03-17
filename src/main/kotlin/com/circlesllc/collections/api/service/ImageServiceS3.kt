@@ -8,6 +8,7 @@ import io.minio.messages.Item
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.util.concurrent.TimeUnit
 
 
@@ -70,13 +71,13 @@ class ImageServiceS3(
                         .recursive(false)
                         .build()
                 )
-                println(results)
+
                 for (result in results!!) {
                     val item = result.get()
                     // Skip directory-like entries (no real object content)
                     if (item.isDir) continue
 
-                    println("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
+                    log.info("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
                     val objectNameValue: String = item.objectName()
                     val url =
                         client.getPresignedObjectUrl(
@@ -87,7 +88,6 @@ class ImageServiceS3(
                                 .expiry(URL_EXPIRY_DURATION, URL_EXPIRY_UNIT)
                                 .build()
                         )
-                    log.info("URL is  ${url}")
                     val image: Image = Image(item.lastModified(), item.size(), item.objectName(), url)
                     list.add(image)
                     listUrls.add(url)
@@ -110,8 +110,42 @@ class ImageServiceS3(
         }
         return list
     }
+
     open fun deleteImage(storedImageFileName: String): Boolean {
+        minioClient?.removeObject(RemoveObjectArgs.builder().bucket(minioBucket).`object`(storedImageFileName).build())
 
         return false
     }
+
+    fun storeImage(fileNameGiven: MultipartFile, bucketName: String) {
+        try {
+            log.info("in storeImage Service side"+ fileNameGiven.originalFilename + " bucketName =" + bucketName)
+
+            val minioFileName: String = generateMinioFileName("rajeevk",fileNameGiven.originalFilename)
+            log.info("minioFileName = " + minioFileName)
+            val minioClient = getMinioClient()
+            fileNameGiven.inputStream.use { inputStream ->
+                minioClient?.putObject(
+                    PutObjectArgs.builder()
+                        .bucket(bucketName)
+                        .`object`(minioFileName)
+                        .stream(inputStream, fileNameGiven.size, -1)
+                        .contentType(fileNameGiven.contentType ?: "application/octet-stream")
+                        .build()
+                )
+            }
+
+            log.info("{${fileNameGiven.originalFilename}} is successfully uploaded as {$minioFileName}")
+
+        } catch(e: Exception) {
+            log.error("Exception in storeImage Service side")
+            e.printStackTrace()
+        }
+    }
+    fun generateMinioFileName(userId: String, fileNameGiven: String?):String {
+        if(fileNameGiven == null) return "ImageName issue"
+         var minioFileName: String = "itemId"+"_"+userId+"-"+fileNameGiven
+        return minioFileName
+    }
+
 }

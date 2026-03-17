@@ -1,18 +1,26 @@
 package com.circlesllc.collections.api.service
 
-import com.circlesllc.collections.api.dataobject.Image
-import io.minio.*
+import io.minio.MinioClient
+import io.minio.Result
 import io.minio.messages.Bucket
 import io.minio.messages.Item
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.ZonedDateTime
 
 internal class ImageServiceS3Test {
+    @Test
+    fun deleteImage() {
+    }
+
+    @Test
+    fun storeImage() {
+    }
 
     private lateinit var minioClient: MinioClient
     private lateinit var imageService: ImageServiceS3
