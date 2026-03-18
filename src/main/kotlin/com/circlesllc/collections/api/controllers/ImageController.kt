@@ -2,12 +2,8 @@ package com.circlesllc.collections.api.controllers
 
 import com.circlesllc.collections.api.dataobject.Image
 import com.circlesllc.collections.api.service.ImageServiceS3
-import io.minio.BucketExistsArgs
-import io.minio.UploadObjectArgs
-import io.minio.errors.MinioException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 

@@ -51,8 +51,8 @@ class ImageServiceS3(
     }
 
     fun images(): ArrayList<Image> {
-        var list: ArrayList<Image> = ArrayList<Image>()
-        var listUrls: ArrayList<String> = ArrayList()
+        val list: ArrayList<Image> = ArrayList<Image>()
+        val listUrls: ArrayList<String> = ArrayList()
 
         val reqParams: MutableMap<String, String> = HashMap()
         reqParams[PARAM_RESPONSE_CONTENT_TYPE] = CONTENT_TYPE_JSON
@@ -112,8 +112,8 @@ class ImageServiceS3(
         return list
     }
 
-    open fun deleteImage(storedImageFileName: String, bucketName:String, userId: String): Boolean {
-        var minioClient = getMinioClient()
+    fun deleteImage(storedImageFileName: String, bucketName:String, userId: String): Boolean {
+        val minioClient = getMinioClient()
         try {
             val storedFileNameMinio: String = MINIO_PATH+storedImageFileName
             minioClient?.removeObject(
