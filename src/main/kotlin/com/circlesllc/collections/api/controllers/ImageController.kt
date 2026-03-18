@@ -13,13 +13,8 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/collection/images")
 class ImageController(
     val imageServiceS3: ImageServiceS3,
-
-
-
     @Value("\${collection.images.s3.bucket}")
     val bucketName: String,
-    @Value("\${minio.s3.url}")
-    val minioUrl: String
 ) {
 
     companion object {
