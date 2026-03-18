@@ -21,7 +21,8 @@ class ImageServiceS3(
     @Value("\${minio.s3.secret.key}")
     var minioSecretKey: String?,
     @Value("\${minio.s3.url}")
-    var minioS3URL: String?
+    var minioS3URL: String?,
+    val MINIO_PATH: String = "/rajeevk/item_id"
 ) {
 
     private var minioClient: MinioClient? = null
@@ -111,18 +112,26 @@ class ImageServiceS3(
         return list
     }
 
-    open fun deleteImage(storedImageFileName: String): Boolean {
-        minioClient?.removeObject(RemoveObjectArgs.builder().bucket(minioBucket).`object`(storedImageFileName).build())
-
-        return false
+    open fun deleteImage(storedImageFileName: String, bucketName:String, userId: String): Boolean {
+        var minioClient = getMinioClient()
+        try {
+            val storedFileNameMinio: String = MINIO_PATH+storedImageFileName
+            minioClient?.removeObject(
+                RemoveObjectArgs.builder().bucket(bucketName).`object`(storedFileNameMinio).build()
+            )
+        } catch (e: Exception) {
+            log.error("Exception in deleteImage Service side")
+            e.printStackTrace()
+            return false
+        }
+        return true
     }
 
-    fun storeImage(fileNameGiven: MultipartFile, bucketName: String) {
+    fun storeImage(fileNameGiven: MultipartFile, bucketName: String, userId: String) {
         try {
             log.info("in storeImage Service side"+ fileNameGiven.originalFilename + " bucketName =" + bucketName)
 
             val minioFileName: String = generateMinioFileName("rajeevk",fileNameGiven.originalFilename)
-            log.info("minioFileName = " + minioFileName)
             val minioClient = getMinioClient()
             fileNameGiven.inputStream.use { inputStream ->
                 minioClient?.putObject(
@@ -144,7 +153,7 @@ class ImageServiceS3(
     }
     fun generateMinioFileName(userId: String, fileNameGiven: String?):String {
         if(fileNameGiven == null) return "ImageName issue"
-         var minioFileName: String = "itemId"+"_"+userId+"-"+fileNameGiven
+         var minioFileName: String = MINIO_PATH+fileNameGiven
         return minioFileName
     }
 
