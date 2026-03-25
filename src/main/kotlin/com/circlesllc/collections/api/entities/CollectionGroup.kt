@@ -12,18 +12,16 @@ import org.hibernate.type.SqlTypes
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "collection_group")
-//@TypeDef(name="jsonb", typeClass = JsonBinaryType::class)
-//@Convert(attributeName = "entityAttrName", converter = "StringJsonUserType.class"
 data class CollectionGroup(
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Long,
-        @Column
-        val name: String,
-        // the type for jsonb is important and so also the column definition for saving into the table
-        @JdbcTypeCode(SqlTypes.JSON)
-        @Column(columnDefinition = "jsonb", nullable = true)
-        var itemcontents: String
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Long,
+    @Column
+    val name: String,
+    // the type for jsonb is important and so also the column definition for saving into the table
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", nullable = true)
+    var itemcontents: String
 
 ) {
 

@@ -29,23 +29,23 @@ class ImageController(
 
     @DeleteMapping("/{*storedImageFileName}")
     fun deleteImage(@PathVariable storedImageFileName: String): Boolean {
-        log.info("in deleteImage Controller side"+ storedImageFileName)
-        return imageServiceS3.deleteImage(storedImageFileName, bucketName,"")
+        log.info("in deleteImage Controller side" + storedImageFileName)
+        return imageServiceS3.deleteImage(storedImageFileName, bucketName, "")
     }
 
     // Add @RequestBody to the parameter to send jpg, mvoie, png etc.
     @PostMapping("/upload/")
     fun putImageInS3(@RequestParam fileName: MultipartFile): Boolean {
         // get UserId from JWT token or ask the UI to pass it in the request.
-       try{
-        imageServiceS3.storeImage(fileName,bucketName, "")
-        return true
-       } catch(e: Exception) {
-           log.error("Exception in putImageInS3 Controller side")
-           log.info("in Post mapping= " + fileName.originalFilename + " bucketName =" + bucketName)
-           e.printStackTrace()
-           return false
-       }
+        try {
+            imageServiceS3.storeImage(fileName, bucketName, "")
+            return true
+        } catch (e: Exception) {
+            log.error("Exception in putImageInS3 Controller side")
+            log.info("in Post mapping= " + fileName.originalFilename + " bucketName =" + bucketName)
+            e.printStackTrace()
+            return false
+        }
     }
 
 }

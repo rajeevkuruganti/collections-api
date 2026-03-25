@@ -7,13 +7,8 @@ import java.time.ZonedDateTime
 @JsonRootName("Image")
 @AllArgsConstructor
 data class Image(val lastModified: ZonedDateTime, val size: Long, val objectName: String, val url: String) {
-//       val  objectName = objectName
-//       val lastModified: ZonedDateTime = lastModified
-//       val url: String = url
-//       val size:Long = size
 
-
-override fun toString(): String {
-    return "last modified = ${lastModified}  url = ${url}"
-}
+    override fun toString(): String {
+        return "last modified = ${lastModified}  url = ${url}"
+    }
 }

@@ -34,8 +34,8 @@ class CollectionGroupService {
         return try {
             collectionGroupRepo.deleteById(collectionId)
             true
-        } catch (nfe: Exception ) {
-            log.error("NOT FOUND "+ nfe.message)
+        } catch (nfe: Exception) {
+            log.error("NOT FOUND " + nfe.message)
             false
         }
     }
@@ -44,7 +44,7 @@ class CollectionGroupService {
         return try {
             collectionGroupRepo.findByName(inputName)
         } catch (nfe: Exception) {
-            log.error("NOT FOUND "+ nfe.message)
+            log.error("NOT FOUND " + nfe.message)
             Optional.empty()
         }
 
@@ -60,26 +60,29 @@ class CollectionGroupService {
         try {
             return collectionGroupRepo.findById(collectionId)
         } catch (nfe: Exception) {
-            log.error("NOT FOUND "+ nfe.message.toString())
+            log.error("NOT FOUND " + nfe.message.toString())
             return Optional.empty()
 
         }
     }
 
-    fun updateItem(storedItemId: Long, updateJson: String): CollectionGroup? {
+    fun updateItem(storedItemId: Long, collectionGroupEdited: CollectionGroupDO): CollectionGroup {
         val storedItemOptional: Optional<CollectionGroup> = collectionGroupRepo.findById(storedItemId)
         if (storedItemOptional.isEmpty) {
             log.error("Item with id $storedItemId not found")
             false
         }
         val storedItem = storedItemOptional.get()
+        log.info("collectionGroupEdited = ${collectionGroupEdited.name}")
         val json = Json { ignoreUnknownKeys = true }
         val storedJson = json.parseToJsonElement(storedItem.itemcontents).jsonObject
-        val newJsonValues = json.parseToJsonElement(updateJson).jsonObject
+        log.info("storedJson = $storedJson")
+        val newJsonValues = json.parseToJsonElement(collectionGroupEdited.itemcontents).jsonObject
+        log.info("newJsonValues = $newJsonValues")
         val updatedJsonObject = JsonObject(storedJson.toMutableMap().apply {
             this.putAll(newJsonValues)
         })
-        
+        log.info("updatedJsonObject = $updatedJsonObject")
         storedItem.itemcontents = updatedJsonObject.toString()
         return collectionGroupRepo.save(storedItem)
     }

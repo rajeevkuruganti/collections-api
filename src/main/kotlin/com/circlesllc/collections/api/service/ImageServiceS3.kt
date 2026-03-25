@@ -51,6 +51,7 @@ class ImageServiceS3(
     }
 
     fun images(): ArrayList<Image> {
+//        val list: MutableList = MutableList<Image>()
         val list: ArrayList<Image> = ArrayList<Image>()
         val listUrls: ArrayList<String> = ArrayList()
 
@@ -68,10 +69,11 @@ class ImageServiceS3(
                 val results: MutableIterable<Result<Item>>? = client.listObjects(
                     ListObjectsArgs.builder()
                         .bucket(minioBucket)
-                        .prefix("rajeevk/")   // your “folder”
-                        .recursive(false)
+                        .prefix("newpath/")   // your “folder”
+                        .recursive(true)
                         .build()
                 )
+                log.info("results = $results.toString()")
 
                 for (result in results!!) {
                     val item = result.get()
@@ -90,6 +92,8 @@ class ImageServiceS3(
                                 .build()
                         )
                     val image: Image = Image(item.lastModified(), item.size(), item.objectName(), url)
+                    log.info("${item.lastModified()}, ${item.size()}, ${item.objectName()}")
+                    log.info(url)
                     list.add(image)
                     listUrls.add(url)
                     log.info(image.toString())
@@ -109,13 +113,14 @@ class ImageServiceS3(
         } else {
             log.warn("Do not have any variables to connect to Minio !")
         }
+
         return list
     }
 
-    fun deleteImage(storedImageFileName: String, bucketName:String, userId: String): Boolean {
+    fun deleteImage(storedImageFileName: String, bucketName: String, userId: String): Boolean {
         val minioClient = getMinioClient()
         try {
-            val storedFileNameMinio: String = MINIO_PATH+storedImageFileName
+            val storedFileNameMinio: String = MINIO_PATH + storedImageFileName
             minioClient?.removeObject(
                 RemoveObjectArgs.builder().bucket(bucketName).`object`(storedFileNameMinio).build()
             )
@@ -129,9 +134,9 @@ class ImageServiceS3(
 
     fun storeImage(fileNameGiven: MultipartFile, bucketName: String, userId: String) {
         try {
-            log.info("in storeImage Service side"+ fileNameGiven.originalFilename + " bucketName =" + bucketName)
+            log.info("in storeImage Service side" + fileNameGiven.originalFilename + " bucketName =" + bucketName)
 
-            val minioFileName: String = generateMinioFileName("rajeevk",fileNameGiven.originalFilename)
+            val minioFileName: String = generateMinioFileName("rajeevk", fileNameGiven.originalFilename)
             val minioClient = getMinioClient()
             fileNameGiven.inputStream.use { inputStream ->
                 minioClient?.putObject(
@@ -146,14 +151,15 @@ class ImageServiceS3(
 
             log.info("{${fileNameGiven.originalFilename}} is successfully uploaded as {$minioFileName}")
 
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             log.error("Exception in storeImage Service side")
             e.printStackTrace()
         }
     }
-    fun generateMinioFileName(userId: String, fileNameGiven: String?):String {
-        if(fileNameGiven == null) return "ImageName issue"
-         var minioFileName: String = MINIO_PATH+fileNameGiven
+
+    fun generateMinioFileName(userId: String, fileNameGiven: String?): String {
+        if (fileNameGiven == null) return "ImageName issue"
+        var minioFileName: String = MINIO_PATH + fileNameGiven
         return minioFileName
     }
 

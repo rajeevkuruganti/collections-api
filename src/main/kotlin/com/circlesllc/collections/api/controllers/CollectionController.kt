@@ -15,11 +15,7 @@ class CollectionController() {
     @Autowired
     private lateinit var collectionGroupService: CollectionGroupService
 
-    @GetMapping("/info")
-    fun getInfo(): String {
-        return "This is the Collectible Application. " +
-                "In this application, you can store your collections and organize them. "
-    }
+
 
     @GetMapping("/cs")
     fun getAll(): ResponseEntity<MutableIterable<CollectionGroup>> {
@@ -33,7 +29,7 @@ class CollectionController() {
 
     @GetMapping("/cs/{collectionId}")
     fun getOne(
-            @PathVariable collectionId: Long
+        @PathVariable collectionId: Long
     ): Any {
         val myItem = collectionGroupService.findById(collectionId)
         if (myItem != null) {
@@ -44,7 +40,7 @@ class CollectionController() {
 
     @GetMapping("/cs/name/{collectionName}")
     fun getByName(
-            @PathVariable collectionName: String
+        @PathVariable collectionName: String
     ): Any {
         val myItem = collectionGroupService.findByName(collectionName)
         if (myItem != null) {
@@ -60,20 +56,32 @@ class CollectionController() {
 
     @DeleteMapping("/cs/{collectionId}")
     fun deleteOne(
-            @PathVariable collectionId: Long
+        @PathVariable collectionId: Long
     ): Boolean {
         return collectionGroupService.deleteById(collectionId)
     }
+
     @PatchMapping("/cs/{collectibleId}")
     fun updateItem(
-          @PathVariable collectibleId: Long,
-          @RequestBody updatedJsonInfo: String
-    ) : Any {
-        val myStoredItem= collectionGroupService.updateItem(collectibleId, updatedJsonInfo)
-        if (myStoredItem != null) {
-            return ResponseEntity.ok(myStoredItem)
-        }
-        return ResponseEntity.notFound()
+        @PathVariable collectibleId: Long,
+        @RequestBody collectionGroupEdited: CollectionGroupDO
+    ): CollectionGroup {
+        val myStoredItem = collectionGroupService.updateItem(collectibleId, collectionGroupEdited)
+        return myStoredItem
+    }
+
+    @GetMapping("/info")
+    fun getInfo(): String {
+        return "This is the Collectible Application. " +
+                "In this application, you can store your collections and organize them." +
+                "Future Enhancements TODO::" +
+                " 1.  Use env vars for most application.yaml file so we have one " +
+                " 1.5 Update README.MD with the env variables needed  " +
+                " 2.  Use NO IMAGES For REnder deploymnet - maybe still undecided" +
+                " 3.  refresh after update a record and fix teh service to update name also  " +
+                " 4.  Update the delete to use delete flag" +
+                " 5.  Duplicate Records so user can edit a few stuff            " +
+                " 6.  Possibly later on have tabs with 'Books','Coins','Music','Art','Misc'"
     }
 
 }

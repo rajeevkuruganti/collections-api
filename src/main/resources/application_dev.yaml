@@ -11,17 +11,16 @@ collection:
 minio:
   s3:
     access:
-      key: ${MINIO_ACCESS_KEY}
+#      key:
+      key: wlYOEioeDrXmEW5kMuwd
     secret:
-      key: ${MINIO_SECRET_KEY}
-    url: ${MINIO_URL}
+      key: vrO8aoxzL6dIzEeNNIBSEoCBJS0RVP9jPGWHtR8M
+    url: http://127.0.0.1:9000
 spring:
-  profiles:
-    active: ${ENV_APP}
   datasource:
-    url: jdbc:postgresql://${DB_HOST}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/postgres
+#    username: collectibles
+#    password: fly1234
   flyway:
     baseline-on-migrate: true
     repeatable-sql-migration-prefix: R
