@@ -2,14 +2,14 @@
 FROM gradle:8.0.2-jdk19 AS builder
 WORKDIR /home/gradle/src
 
-COPY build.gradle settings.gradle gradlew ./
+COPY build.gradle.kts settings.gradle.kts gradlew ./
 COPY gradle ./gradle
 COPY src ./src
 
 RUN ./gradlew clean bootJar -x test
 
 
-# Runtime stage (this line is essential)
+# Runtime stage
 FROM azul/zulu-openjdk:17-latest
 WORKDIR /app
 
