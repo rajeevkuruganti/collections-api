@@ -6,6 +6,7 @@ COPY src ./src
 RUN ./gradlew clean bootJar -x test
 
 #FROM azul/zulu-openjdk:17-alpine
-#WORKDIR /app
+PWD
+WORKDIR /app
 COPY --from=builder /home/gradle/src/build/libs/collections-api-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-jar","/app/app.jar"]
