@@ -17,7 +17,7 @@ data class CollectionGroup(
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long,
     @Column
-    val name: String,
+    var name: String,
     // the type for jsonb is important and so also the column definition for saving into the table
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb", nullable = true)

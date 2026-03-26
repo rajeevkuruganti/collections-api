@@ -73,7 +73,7 @@ class CollectionGroupService {
             false
         }
         val storedItem = storedItemOptional.get()
-        log.info("collectionGroupEdited = ${collectionGroupEdited.name}")
+
         val json = Json { ignoreUnknownKeys = true }
         val storedJson = json.parseToJsonElement(storedItem.itemcontents).jsonObject
         log.info("storedJson = $storedJson")
@@ -83,6 +83,9 @@ class CollectionGroupService {
             this.putAll(newJsonValues)
         })
         log.info("updatedJsonObject = $updatedJsonObject")
+        storedItem.name = collectionGroupEdited.name
+            .takeIf { it != storedItem.name } ?: storedItem.name
+
         storedItem.itemcontents = updatedJsonObject.toString()
         return collectionGroupRepo.save(storedItem)
     }
