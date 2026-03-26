@@ -11,7 +11,6 @@ COPY src ./src
 
 RUN ./gradlew clean bootJar -x test
 
-FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
+COPY --from=build /home/gradle/src/build/libs/collections-api-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-jar","/app/app.jar"]
