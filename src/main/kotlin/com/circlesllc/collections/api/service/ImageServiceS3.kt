@@ -64,7 +64,7 @@ class ImageServiceS3(
             val found =
                 client.bucketExists(BucketExistsArgs.builder().bucket(minioBucket).build())
             if (found) {
-                log.info("Yes !!! I connected to my bucket exists")
+                log.info("Connected to my bucket")
                 val results: Iterable<Result<Item>>? = client.listObjects(
                     ListObjectsArgs.builder()
                         .bucket(minioBucket)
@@ -72,7 +72,6 @@ class ImageServiceS3(
                         .recursive(true)
                         .build()
                 )
-                log.info("results = $results.toString()")
 
                 for (result in results!!) {
                     val item = result.get()
