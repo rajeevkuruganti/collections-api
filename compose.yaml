@@ -1,13 +1,1 @@
-services:
-  app:
-    image: collections-api
-    environment:
-      DB_HOST: d4X49FMRaTEgrJtGTy6wq7iYy89xGY7d@dpg-d6vetrh5pdvs738kb2l0-a.ohio-postgres.render.com:5432
-      DB_NAME: collectibles_f0ax
-      DB_USER: collectibles
-      DB_PASSWORD: d4X49FMRaTEgrJtGTy6wq7iYy89xGY7d
-      MINIO_URL: https://minio-server-up49.onrender.com
-      MINIO_ACCESS_KEY: +a+HmH166UU+UlTulzqwoGWDV0LiWONeuBF6MH+Hsj4=
-      MINIO_SECRET_KEY: XVP/1xabX8tkwOHksEIGLjVIPKqMpfbmks13ZJAHVDY=
-    ports:
-      - "8080:8080"
+
