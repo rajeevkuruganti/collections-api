@@ -24,7 +24,7 @@ class ImageController(
 
     @GetMapping
     fun getListOfImages(): List<Image> {
-        return imageServiceS3.images()
+        return imageServiceS3.getImages()
     }
 
     @DeleteMapping("/{*storedImageFileName}")

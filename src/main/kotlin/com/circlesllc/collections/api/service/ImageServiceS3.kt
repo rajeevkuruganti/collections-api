@@ -50,9 +50,8 @@ class ImageServiceS3(
         private val URL_EXPIRY_UNIT = TimeUnit.HOURS
     }
 
-    fun images(): ArrayList<Image> {
-//        val list: MutableList = MutableList<Image>()
-        val list: ArrayList<Image> = ArrayList<Image>()
+    fun getImages(): List<Image> {
+        val list = mutableListOf<Image>()
         val listUrls: ArrayList<String> = ArrayList()
 
         val reqParams: MutableMap<String, String> = HashMap()
@@ -66,10 +65,10 @@ class ImageServiceS3(
                 client.bucketExists(BucketExistsArgs.builder().bucket(minioBucket).build())
             if (found) {
                 log.info("Yes !!! I connected to my bucket exists")
-                val results: MutableIterable<Result<Item>>? = client.listObjects(
+                val results: Iterable<Result<Item>>? = client.listObjects(
                     ListObjectsArgs.builder()
                         .bucket(minioBucket)
-                        .prefix("newpath/")   // your “folder”
+//                        .prefix("newpath/")   // your “folder”
                         .recursive(true)
                         .build()
                 )
