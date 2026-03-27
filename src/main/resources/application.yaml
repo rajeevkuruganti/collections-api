@@ -1,3 +1,5 @@
+server:
+  port: 8088
 cors:
   allowed-origins:
     - "http://localhost:5173"
